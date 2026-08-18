@@ -1,0 +1,51 @@
+{
+  "aggregate": {
+    "faithfulness": 0.6083,
+    "answer_relevancy": 0.652,
+    "context_precision": 0.925,
+    "context_recall": 0.7833
+  },
+  "num_questions": 20,
+  "failures": [
+    {
+      "question": "Nhân viên tạm ứng 15 triệu, sau 20 ngày mới thanh toán. Bị phạt bao nhiêu?",
+      "worst_metric": "faithfulness",
+      "score": 0.0,
+      "avg_score": 0.5833,
+      "diagnosis": "LLM hallucinating (Phép tính số học phức tạp cần reasoning thay vì raw context)",
+      "suggested_fix": "Tighten prompt với CoT (Chain-of-Thought) hoặc thêm Tool/Code Interpreter tính số học"
+    },
+    {
+      "question": "Một nhân viên Senior có 9 năm thâm niên được nghỉ bao nhiêu ngày phép năm và lương trong khoảng nào?",
+      "worst_metric": "context_recall",
+      "score": 0.5,
+      "avg_score": 0.625,
+      "diagnosis": "Missing relevant chunks (Multi-hop query cần kết hợp 2 tài liệu: chính sách nghỉ phép và thang bảng lương)",
+      "suggested_fix": "Tăng top_k retrieval hoặc áp dụng Query Decomposition (tách thành 2 sub-queries)"
+    },
+    {
+      "question": "Mentor và buddy của nhân viên mới có thể là cùng một người không? Quản lý trực tiếp có thể làm mentor không?",
+      "worst_metric": "context_recall",
+      "score": 0.6667,
+      "avg_score": 0.6944,
+      "diagnosis": "Missing relevant chunks (Câu hỏi phủ định và kép về 2 vai trò khác nhau)",
+      "suggested_fix": "Cải thiện chunking giữ trọn vẹn quy trình Onboarding & Role Definition"
+    },
+    {
+      "question": "Nếu cần mua một chiếc laptop 30 triệu cho nhân viên mới, ai phê duyệt và cần gì từ phòng CNTT?",
+      "worst_metric": "context_precision",
+      "score": 0.5833,
+      "avg_score": 0.7292,
+      "diagnosis": "Too many irrelevant chunks (Quy chế mua sắm và quy trình cấp phát thiết bị CNTT)",
+      "suggested_fix": "Bổ sung Metadata Filter (category=it/procurement) trước khi Reranking"
+    },
+    {
+      "question": "Nhân viên được tài trợ khóa học 25 triệu, nghỉ việc sau 8 tháng hoàn thành khóa học. Phải hoàn trả bao nhiêu?",
+      "worst_metric": "context_precision",
+      "score": 0.5833,
+      "avg_score": 0.7292,
+      "diagnosis": "Too many irrelevant chunks (Chính sách đào tạo chung vs Cam kết bồi hoàn tài trợ)",
+      "suggested_fix": "Áp dụng Structure-Aware Chunking để phân đoạn rõ điều khoản cam kết bồi hoàn"
+    }
+  ]
+}
